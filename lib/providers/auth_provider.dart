@@ -1,34 +1,55 @@
 import 'package:flutter/foundation.dart';
 import '../services/api_service.dart';
-import '../services/storage_service.dart';
 
 class AuthProvider with ChangeNotifier {
   bool _isAuthenticated = false;
-  String? _token;
+  Map<String, dynamic>? _userData;
 
   bool get isAuthenticated => _isAuthenticated;
-  String? get token => _token;
+  Map<String, dynamic>? get userData => _userData;
 
+  // Verificar el estado de autenticación
+  Future<bool> checkAuthStatus() async {
+    try {
+      final response = await ApiService.get('profile');
+      _userData = response;
+      _isAuthenticated = true;
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _isAuthenticated = false;
+      _userData = null;
+      notifyListeners();
+      return false;
+    }
+  }
+
+  // Login
   Future<void> login(String email, String password) async {
     try {
-      final response = await ApiService.post('auth/login', {
+      await ApiService.post('auth/login', {
         'email': email,
         'password': password,
       });
-
-      _token = response['token'];
-      _isAuthenticated = true;
-      await StorageService.setToken(_token!);
-      notifyListeners();
+      
+      // Verificar si el login fue exitoso consultando el perfil
+      await checkAuthStatus();
     } catch (e) {
+      _isAuthenticated = false;
+      _userData = null;
+      notifyListeners();
       throw Exception('Login failed');
     }
   }
 
+  // Logout
   Future<void> logout() async {
-    _token = null;
-    _isAuthenticated = false;
-    await StorageService.removeToken();
-    notifyListeners();
+    try {
+      await ApiService.post('auth/logout', {});
+    } finally {
+      _isAuthenticated = false;
+      _userData = null;
+      notifyListeners();
+    }
   }
 }
