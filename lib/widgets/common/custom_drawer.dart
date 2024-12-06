@@ -58,8 +58,7 @@ class CustomDrawer extends StatelessWidget {
                   title: const Text('Cerrar Sesión'),
                   onTap: () async {
                     Navigator.pop(context); // Cierra el drawer
-                    await authProvider.logout();
-                    Navigator.of(context).pushReplacementNamed('/login');
+                    await authProvider.logout(context);
                   },
                 ),
               ],

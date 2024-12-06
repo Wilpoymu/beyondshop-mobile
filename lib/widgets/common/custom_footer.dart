@@ -12,7 +12,7 @@ class CustomFooter extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           const Text(
-            'Desarrollado por [Tu Nombre]',
+            'Desarrollado por Wilfer Zuluaga A.',
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),

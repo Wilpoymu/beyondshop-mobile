@@ -19,13 +19,13 @@ class HomeScreen extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () async {
-              await authProvider.logout();
-              Navigator.of(context).pushReplacementNamed('/login');
+              Navigator.pop(context); // Cierra el drawer
+              await authProvider.logout(context);
             },
           ),
         ],
       ),
-      drawer: CustomDrawer(),
+      drawer: const CustomDrawer(),
       body: Column(
         children: [
           Expanded(
@@ -53,7 +53,7 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
           ),
-          CustomFooter(),
+          const CustomFooter(),
         ],
       ),
     );
