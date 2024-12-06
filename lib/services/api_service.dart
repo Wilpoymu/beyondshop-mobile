@@ -4,6 +4,7 @@ import '../config/api_config.dart';
 
 class ApiService {
   static final http.Client _client = http.Client();
+  static const String baseUrl = 'https://api.example.com';
 
   // Método para realizar peticiones manteniendo las cookies
   static Future<http.Response> _makeRequest(

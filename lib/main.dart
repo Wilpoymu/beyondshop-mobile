@@ -3,12 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/auth_provider.dart';
 import 'providers/product_provider.dart';
-import 'models/product.dart'; // Import the Product model
+import 'providers/order_provider.dart'; // Import the OrderProvider
+import 'models/product.dart' as product_model; // Import the Product model
 import 'screens/auth/login_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/products/product_detail_screen.dart';
 import 'screens/products/product_search_screen.dart';
 import 'screens/products/product_form_screen.dart';
+import 'screens/orders/orders_list_screen.dart'; // Import the OrdersListScreen
+import 'models/order.dart'; // Import the Order model
+import 'screens/orders/order_detail_screen.dart'; // Import the OrderDetailScreen
+import 'screens/orders/order_form_screen.dart'; // Import the OrderFormScreen
 
 void main() {
   runApp(const MyApp());
@@ -23,9 +28,10 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => ProductProvider()),
+        ChangeNotifierProvider(create: (_) => OrderProvider()), // Add OrderProvider
       ],
       child: MaterialApp(
-        title: 'Mi App',
+        title: 'Beyond Shop',
         theme: ThemeData(
           primarySwatch: Colors.blue,
           scaffoldBackgroundColor: Colors.white,
@@ -40,9 +46,12 @@ class MyApp extends StatelessWidget {
           '/login': (context) => const LoginScreen(),
           '/home': (context) => const HomeScreen(),
           '/products': (context) => const ProductsListScreen(),
-          '/product-detail': (context) => ProductDetailScreen(product: ModalRoute.of(context)!.settings.arguments as Product),
+          '/product-detail': (context) => ProductDetailScreen(product: ModalRoute.of(context)!.settings.arguments as product_model.Product),
           '/product-search': (context) => const ProductSearchScreen(),
           '/product-form': (context) => const ProductFormScreen(),
+          '/orders': (context) => const OrdersListScreen(), // Add OrdersListScreen route
+          '/order-detail': (context) => OrderDetailScreen(ModalRoute.of(context)!.settings.arguments as Order),
+          '/order-form': (context) => const OrderFormScreen(), // Add OrderFormScreen route
         },
       ),
     );
