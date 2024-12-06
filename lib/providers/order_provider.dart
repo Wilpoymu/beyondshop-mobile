@@ -16,4 +16,14 @@ class OrderProvider with ChangeNotifier {
       throw Exception('Failed to load orders');
     }
   }
+
+  Future<void> deleteOrder(String orderId) async {
+    try {
+      await ApiService.delete('orders/$orderId');
+      _orders.removeWhere((order) => order.id == orderId);
+      notifyListeners();
+    } catch (error) {
+      throw Exception('Failed to delete order');
+    }
+  }
 }

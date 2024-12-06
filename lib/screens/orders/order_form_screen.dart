@@ -5,7 +5,9 @@ import '../../models/product.dart' as product_model; // Use alias for product
 import '../../services/api_service.dart';
 
 class OrderFormScreen extends StatefulWidget {
-  const OrderFormScreen({super.key});
+  final Order? order;
+
+  const OrderFormScreen({super.key, this.order});
 
   @override
   _OrderFormScreenState createState() => _OrderFormScreenState();
@@ -14,7 +16,7 @@ class OrderFormScreen extends StatefulWidget {
 class _OrderFormScreenState extends State<OrderFormScreen> {
   final _formKey = GlobalKey<FormState>();
   Customer? _selectedCustomer;
-  final List<ProductDetail> _productsDetails = [];
+  List<ProductDetail> _productsDetails = [];
   double _totalPrice = 0.0;
   List<Customer> _customers = [];
   List<product_model.Product> _products = [];
@@ -26,12 +28,32 @@ class _OrderFormScreenState extends State<OrderFormScreen> {
     super.initState();
     _fetchCustomers();
     _fetchProducts();
+    if (widget.order != null) {
+      _initializeForm(widget.order!);
+    }
+  }
+
+  void _initializeForm(Order order) {
+    _selectedCustomer = _customers.firstWhere((customer) => customer.id == order.clientId.id, orElse: () => Customer(
+      id: order.clientId.id,
+      document: order.clientId.document,
+      name: order.clientId.name,
+      address: order.clientId.address,
+      phone: order.clientId.phone,
+      createdAt: order.clientId.createdAt,
+      updatedAt: order.clientId.updatedAt,
+    ));
+    _productsDetails = order.productsDetails;
+    _totalPrice = order.totalPrice;
   }
 
   Future<void> _fetchCustomers() async {
     final data = await ApiService.get('customers');
     setState(() {
       _customers = data.map<Customer>((json) => Customer.fromJson(json)).toList();
+      if (widget.order != null) {
+        _initializeForm(widget.order!);
+      }
     });
   }
 
@@ -78,7 +100,11 @@ class _OrderFormScreenState extends State<OrderFormScreen> {
       };
 
       try {
-        await ApiService.post('orders', orderData);
+        if (widget.order == null) {
+          await ApiService.post('orders', orderData);
+        } else {
+          await ApiService.put('orders/${widget.order!.id}', orderData);
+        }
         Navigator.of(context).pushReplacementNamed('/orders'); // Navigate back to orders screen
       } catch (error) {
         // Handle error
@@ -90,7 +116,7 @@ class _OrderFormScreenState extends State<OrderFormScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Order Form'),
+        title: Text(widget.order == null ? 'Create Order' : 'Edit Order'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -145,15 +171,18 @@ class _OrderFormScreenState extends State<OrderFormScreen> {
                   onPressed: _addProduct,
                   child: const Text('Add Product'),
                 ),
-                ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: _productsDetails.length,
-                  itemBuilder: (ctx, i) => ListTile(
-                    title: Text(_productsDetails[i].productId!.name),
-                    subtitle: Text('Quantity: ${_productsDetails[i].quantity} - Price: \$${_productsDetails[i].price}'),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.delete),
-                      onPressed: () => _removeProduct(_productsDetails[i]),
+                SizedBox(
+                  height: 200, // Set a fixed height for the ListView
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: _productsDetails.length,
+                    itemBuilder: (ctx, i) => ListTile(
+                      title: Text(_productsDetails[i].productId!.name),
+                      subtitle: Text('Quantity: ${_productsDetails[i].quantity} - Price: \$${_productsDetails[i].price}'),
+                      trailing: IconButton(
+                        icon: const Icon(Icons.delete),
+                        onPressed: () => _removeProduct(_productsDetails[i]),
+                      ),
                     ),
                   ),
                 ),

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../providers/order_provider.dart';
 import '../../widgets/orders/order_card.dart';
 import 'order_detail_screen.dart'; // Import the OrderDetailScreen
+import 'order_form_screen.dart'; // Import the OrderFormScreen
 
 class OrdersListScreen extends StatelessWidget {
   const OrdersListScreen({super.key});
@@ -43,6 +44,13 @@ class OrdersListScreen extends StatelessWidget {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => OrderDetailScreen(orderProvider.orders[i]),
+                      ),
+                    );
+                  },
+                  onLongPress: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => OrderFormScreen(order: orderProvider.orders[i]),
                       ),
                     );
                   },
