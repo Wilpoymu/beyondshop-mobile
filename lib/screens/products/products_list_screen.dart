@@ -53,59 +53,62 @@ class ProductsListScreen extends StatelessWidget {
               return Consumer<ProductProvider>(
                 builder: (ctx, productProvider, child) => ListView.builder(
                   itemCount: productProvider.products.length,
-                  itemBuilder: (ctx, i) => ListTile(
-                    title: Text(productProvider.products[i].name),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.edit),
-                          onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (ctx) => ProductFormScreen(product: productProvider.products[i]),
-                              ),
-                            );
-                          },
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.delete),
-                          onPressed: () async {
-                            final confirm = await showDialog(
-                              context: context,
-                              builder: (ctx) => AlertDialog(
-                                title: const Text('Confirm Delete'),
-                                content: const Text('Are you sure you want to delete this product?'),
-                                actions: [
-                                  TextButton(
-                                    child: const Text('Cancel'),
-                                    onPressed: () {
-                                      Navigator.of(ctx).pop(false);
-                                    },
-                                  ),
-                                  TextButton(
-                                    child: const Text('Delete'),
-                                    onPressed: () {
-                                      Navigator.of(ctx).pop(true);
-                                    },
-                                  ),
-                                ],
-                              ),
-                            );
-                            if (confirm) {
-                              await Provider.of<ProductProvider>(context, listen: false).deleteProduct(productProvider.products[i].id!);
-                            }
-                          },
-                        ),
-                      ],
+                  itemBuilder: (ctx, i) => Card(
+                    margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    child: ListTile(
+                      title: Text(productProvider.products[i].name),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.edit),
+                            onPressed: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (ctx) => ProductFormScreen(product: productProvider.products[i]),
+                                ),
+                              );
+                            },
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.delete),
+                            onPressed: () async {
+                              final confirm = await showDialog(
+                                context: context,
+                                builder: (ctx) => AlertDialog(
+                                  title: const Text('Confirm Delete'),
+                                  content: const Text('Are you sure you want to delete this product?'),
+                                  actions: [
+                                    TextButton(
+                                      child: const Text('Cancel'),
+                                      onPressed: () {
+                                        Navigator.of(ctx).pop(false);
+                                      },
+                                    ),
+                                    TextButton(
+                                      child: const Text('Delete'),
+                                      onPressed: () {
+                                        Navigator.of(ctx).pop(true);
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              );
+                              if (confirm) {
+                                await Provider.of<ProductProvider>(context, listen: false).deleteProduct(productProvider.products[i].id!);
+                              }
+                            },
+                          ),
+                        ],
+                      ),
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (ctx) => ProductDetailScreen(product: productProvider.products[i]),
+                          ),
+                        );
+                      },
                     ),
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (ctx) => ProductDetailScreen(product: productProvider.products[i]),
-                        ),
-                      );
-                    },
                   ),
                 ),
               );

@@ -35,16 +35,19 @@ class _ProductSearchScreenState extends State<ProductSearchScreen> {
       ),
       body: ListView.builder(
         itemCount: products.length,
-        itemBuilder: (ctx, i) => ListTile(
-          title: Text(products[i].name),
-          trailing: Text('\$${products[i].price.toString()}'),
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (ctx) => ProductDetailScreen(product: products[i]),
-              ),
-            );
-          },
+        itemBuilder: (ctx, i) => Card(
+          margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+          child: ListTile(
+            title: Text(products[i].name),
+            trailing: Text('\$${products[i].price.toString()}'),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (ctx) => ProductDetailScreen(product: products[i]),
+                ),
+              );
+            },
+          ),
         ),
       ),
     );

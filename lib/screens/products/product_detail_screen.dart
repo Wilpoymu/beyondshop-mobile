@@ -27,25 +27,30 @@ class ProductDetailScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              product.name,
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        child: Card(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  product.name,
+                  style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  '\$${product.price}',
+                  style: const TextStyle(fontSize: 20, color: Colors.grey),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Product ID: ${product.id}',
+                  style: const TextStyle(fontSize: 16),
+                ),
+                // Add more product details here
+              ],
             ),
-            const SizedBox(height: 16),
-            Text(
-              '\$${product.price}',
-              style: const TextStyle(fontSize: 20, color: Colors.grey),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              'Product ID: ${product.id}',
-              style: const TextStyle(fontSize: 16),
-            ),
-            // Add more product details here
-          ],
+          ),
         ),
       ),
     );

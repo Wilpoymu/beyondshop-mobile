@@ -26,34 +26,57 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
       drawer: const CustomDrawer(),
-      body: Column(
+      body: Stack(
         children: [
-          Expanded(
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Bienvenido,',
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                  if (userData != null) ...[
-                    const SizedBox(height: 8),
-                    Text(
-                      userData['name'] ?? 'Usuario',
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      userData['email'] ?? '',
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                  ],
-                ],
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/background.jpg'),
+                fit: BoxFit.cover,
               ),
             ),
           ),
-          const CustomFooter(),
+          Column(
+            children: [
+              Expanded(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Bienvenido,',
+                        style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                              fontSize: 32,
+                              color: Colors.white,
+                            ),
+                      ),
+                      if (userData != null) ...[
+                        const SizedBox(height: 8),
+                        Text(
+                          userData['username'] ?? 'Usuario',
+                          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                fontSize: 24,
+                                color: Colors.white,
+                              ),
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          userData['email'] ?? '',
+                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                fontSize: 18,
+                                color: Colors.white70,
+                              ),
+                        ),
+                      ],
+                      const SizedBox(height: 32),
+                      // Removed the ElevatedButton here
+                    ],
+                  ),
+                ),
+              ),
+              const CustomFooter(),
+            ],
+          ),
         ],
       ),
     );
