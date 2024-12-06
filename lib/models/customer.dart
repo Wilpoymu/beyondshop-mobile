@@ -28,4 +28,16 @@ class Customer {
       updatedAt: DateTime.parse(json['updatedAt']),
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      '_id': id,
+      'document': document,
+      'name': name,
+      'address': address,
+      'phone': phone,
+      'createdAt': createdAt.toIso8601String(),
+      'updatedAt': updatedAt.toIso8601String(),
+    };
+  }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/auth_provider.dart';
+import '../../providers/customer_provider.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({super.key});
@@ -17,7 +18,8 @@ class CustomDrawer extends StatelessWidget {
             currentAccountPicture: CircleAvatar(
               backgroundColor: Theme.of(context).colorScheme.secondary,
               child: Text(
-                (userData?['name'] as String?)?.substring(0, 1).toUpperCase() ?? 'U',
+                (userData?['name'] as String?)?.substring(0, 1).toUpperCase() ??
+                    'U',
                 style: const TextStyle(fontSize: 24),
               ),
             ),
@@ -45,11 +47,21 @@ class CustomDrawer extends StatelessWidget {
                   },
                 ),
                 ListTile(
-                  leading: const Icon(Icons.photo_camera),
-                  title: const Text('Cámara y Ubicación'),
+                  leading: const Icon(Icons.people),
+                  title: const Text('Clientes'),
+                  onTap: () {
+                    Navigator.pop(context); // Cierra el drawer
+                    Provider.of<CustomerProvider>(context, listen: false)
+                        .fetchCustomers();
+                    Navigator.pushNamed(context, '/customer/list');
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.camera_alt),
+                  title: const Text('Tomar Foto y Ubicación'),
                   onTap: () {
                     Navigator.pop(context);
-                    Navigator.pushNamed(context, '/camera-location');
+                    Navigator.pushNamed(context, '/photo-location');
                   },
                 ),
                 const Divider(),

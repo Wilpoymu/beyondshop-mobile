@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'providers/auth_provider.dart';
 import 'providers/product_provider.dart';
 import 'providers/order_provider.dart'; // Import the OrderProvider
+import 'providers/customer_provider.dart'; // Import the CustomerProvider
 import 'models/product.dart' as product_model; // Import the Product model
 import 'screens/auth/login_screen.dart';
 import 'screens/home_screen.dart';
@@ -14,6 +15,13 @@ import 'screens/orders/orders_list_screen.dart'; // Import the OrdersListScreen
 import 'models/order.dart'; // Import the Order model
 import 'screens/orders/order_detail_screen.dart'; // Import the OrderDetailScreen
 import 'screens/orders/order_form_screen.dart'; // Import the OrderFormScreen
+import 'screens/customer/customer_list_screen.dart';
+import 'screens/customer/customer_details_screen.dart';
+import 'screens/customer/customer_create_screen.dart';
+import 'screens/customer/customer_edit_screen.dart';
+import 'screens/customer/customer_form_screen.dart';
+import 'models/customer.dart'; // Import the Customer model
+import 'screens/photo_location_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -29,6 +37,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => ProductProvider()),
         ChangeNotifierProvider(create: (_) => OrderProvider()), // Add OrderProvider
+        ChangeNotifierProvider(create: (_) => CustomerProvider()), // Add CustomerProvider
       ],
       child: MaterialApp(
         title: 'Beyond Shop',
@@ -52,6 +61,11 @@ class MyApp extends StatelessWidget {
           '/orders': (context) => const OrdersListScreen(), // Add OrdersListScreen route
           '/order-detail': (context) => OrderDetailScreen(ModalRoute.of(context)!.settings.arguments as Order),
           '/order-form': (context) => const OrderFormScreen(), // Add OrderFormScreen route
+          '/customer/list': (context) => const CustomerListScreen(),
+          '/customer/details': (context) => const CustomerDetailsScreen(),
+          '/customer/create': (context) => const CustomerFormScreen(),
+          '/customer/edit': (context) => CustomerFormScreen(customer: ModalRoute.of(context)!.settings.arguments as Customer),
+          '/photo-location': (context) => PhotoLocationScreen(),
         },
       ),
     );

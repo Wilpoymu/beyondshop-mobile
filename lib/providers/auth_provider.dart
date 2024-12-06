@@ -88,4 +88,17 @@ class AuthProvider with ChangeNotifier {
       Navigator.pushReplacementNamed(context, '/login');
     }
   }
+
+  Future<void> redirectToAppropriatePage(BuildContext context) async {
+    if (_token != null) {
+      bool isAuthenticated = await checkAuthStatus();
+      if (isAuthenticated) {
+        Navigator.pushReplacementNamed(context, '/home');
+      } else {
+        Navigator.pushReplacementNamed(context, '/login');
+      }
+    } else {
+      Navigator.pushReplacementNamed(context, '/login');
+    }
+  }
 }
