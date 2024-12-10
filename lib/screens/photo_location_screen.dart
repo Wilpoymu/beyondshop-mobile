@@ -71,35 +71,42 @@ class _PhotoLocationScreenState extends State<PhotoLocationScreen> {
             SizedBox(height: 20),
             _position == null
                 ? Text('No se ha obtenido la ubicación.')
-                : Expanded(
-                    child: FlutterMap(
-                      options: MapOptions(
-                        center: _currentLatLng,
-                        zoom: 15.0,
-                      ),
-                      children: [
-                        TileLayer(
-                          urlTemplate:
-                              'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                          subdomains: ['a', 'b', 'c'],
-                        ),
-                        if (_currentLatLng != null)
-                          MarkerLayer(
-                            markers: [
-                              Marker(
-                                width: 80.0,
-                                height: 80.0,
-                                point: _currentLatLng!,
-                                builder: (ctx) => Icon(
-                                  Icons.location_on,
-                                  color: Colors.red,
-                                  size: 40,
-                                ),
-                              ),
-                            ],
+                : Column(
+                    children: [
+                      Text('Latitud: ${_position!.latitude}'),
+                      Text('Longitud: ${_position!.longitude}'),
+                      Expanded(
+                        child: FlutterMap(
+                          options: MapOptions(
+                            center: _currentLatLng,
+                            zoom: 15.0,
                           ),
-                      ],
-                    ),
+                          children: [
+                            TileLayer(
+                              urlTemplate: _currentLatLng != null
+                                  ? 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?lat=${_currentLatLng!.latitude}&lon=${_currentLatLng!.longitude}'
+                                  : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                              subdomains: ['a', 'b', 'c'],
+                            ),
+                            if (_currentLatLng != null)
+                              MarkerLayer(
+                                markers: [
+                                  Marker(
+                                    width: 80.0,
+                                    height: 80.0,
+                                    point: _currentLatLng!,
+                                    builder: (ctx) => Icon(
+                                      Icons.location_on,
+                                      color: Colors.red,
+                                      size: 40,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
             SizedBox(height: 20),
             ElevatedButton(
